@@ -9,20 +9,20 @@ import com.gugugua.algorithms.SearchEntry;
  * @author cairne huangyihua@diandian.com
  * @date 2012-6-22
  */
-public class BinarySearchTreeNode<K extends Comparable<K>, V> implements SearchTreeNode<K, V> {
+class BinarySearchTreeNode<K extends Comparable<K>, V> implements SearchTreeNode<K, V> {
 
     private final SearchEntry<K, V> entry;
 
-    private BinarySearchTreeNode<K, V> parent;
+    protected BinarySearchTreeNode<K, V> parent;
 
-    private BinarySearchTreeNode<K, V> leftChild;
+    protected BinarySearchTreeNode<K, V> leftChild;
 
-    private BinarySearchTreeNode<K, V> rightChild;
+    protected BinarySearchTreeNode<K, V> rightChild;
 
     /**
      * @param entry
      */
-    public BinarySearchTreeNode(SearchEntry<K, V> entry) {
+    BinarySearchTreeNode(SearchEntry<K, V> entry) {
         super();
         this.entry = entry;
     }
@@ -39,7 +39,7 @@ public class BinarySearchTreeNode<K extends Comparable<K>, V> implements SearchT
      * @return
      */
     @Override
-    public SearchTreeNode<K, V> getParent() {
+    public BinarySearchTreeNode<K, V> getParent() {
         return parent;
     }
 
@@ -48,7 +48,7 @@ public class BinarySearchTreeNode<K extends Comparable<K>, V> implements SearchT
      */
     @Override
     public boolean hasParent() {
-        return getParent() == null;
+        return getParent() != null;
     }
 
     /**
@@ -100,6 +100,12 @@ public class BinarySearchTreeNode<K extends Comparable<K>, V> implements SearchT
                 + (parent == null ? "null" : parent.getEntry()) + ", leftChild="
                 + (leftChild == null ? "null" : leftChild.getEntry()) + ", rightChild="
                 + (rightChild == null ? "null" : rightChild.getEntry()) + "]";
+    }
+
+    public String toStringAll() {
+        return "BinarySearchTreeNode [entry=" + entry + ", parent="
+                + (parent == null ? "null" : parent.getEntry()) + ", leftChild=" + leftChild
+                + ", rightChild=" + rightChild + "]";
     }
 
 }

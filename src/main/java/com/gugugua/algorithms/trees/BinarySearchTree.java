@@ -20,7 +20,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchStruc
         if (root == null) {
             root = new BinarySearchTreeNode<>(entry);
         } else {
-            insert(root, entry);
+            insert(root, new BinarySearchTreeNode<>(entry));
         }
     }
 
@@ -31,28 +31,28 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchStruc
      * @param key
      * @return
      */
-    protected void insert(BinarySearchTreeNode<K, V> node, SearchEntry<K, V> entry) {
-        if (node == null || entry == null) {
-            return;
+    protected boolean insert(BinarySearchTreeNode<K, V> node, BinarySearchTreeNode<K, V> newNode) {
+        if (node == null || newNode == null) {
+            return false;
         }
-        int compareTo = entry.getKey().compareTo(node.getEntry().getKey());
+        int compareTo = newNode.getEntry().getKey().compareTo(node.getEntry().getKey());
         if (compareTo == 0) {
-            return;
+            return false;
         } else if (compareTo < 0) {
             if (node.getLeftChild() != null) {
-                insert(node.getLeftChild(), entry);
+                return insert(node.getLeftChild(), newNode);
             } else {
-                BinarySearchTreeNode<K, V> newNode = new BinarySearchTreeNode<>(entry);
                 node.setLeftChild(newNode);
                 newNode.setParent(node);
+                return true;
             }
         } else {
             if (node.getRightChild() != null) {
-                insert(node.getRightChild(), entry);
+                return insert(node.getRightChild(), newNode);
             } else {
-                BinarySearchTreeNode<K, V> newNode = new BinarySearchTreeNode<>(entry);
                 node.setRightChild(newNode);
                 newNode.setParent(node);
+                return true;
             }
         }
     }
@@ -63,11 +63,26 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchStruc
      */
     @Override
     public SearchEntry<K, V> get(K key) {
-        BinarySearchTreeNode<K, V> searchNode = search(root, key);
+        BinarySearchTreeNode<K, V> searchNode = search(getRoot(), key);
         if (searchNode == null) {
             return null;
         } else {
             return searchNode.getEntry();
+        }
+    }
+
+    private void checkConstruct(BinarySearchTreeNode<K, V> node) {
+        //check
+        if (node.getLeftChild() != null
+                && (node.getLeftChild().getEntry().getKey().compareTo(node.getEntry().getKey()) >= 0 || node
+                        .getLeftChild().getParent() != node)) {
+            throw new RuntimeException("illeagal construct " + node.getLeftChild() + "\n" + node);
+        }
+        //check
+        if (node.getRightChild() != null
+                && (node.getRightChild().getEntry().getKey().compareTo(node.getEntry().getKey()) <= 0 || node
+                        .getRightChild().getParent() != node)) {
+            throw new RuntimeException("illeagal construct" + node.getRightChild() + "\n" + node);
         }
     }
 
@@ -82,6 +97,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchStruc
         if (node == null || key == null) {
             return null;
         }
+
         int compareTo = key.compareTo(node.getEntry().getKey());
         if (compareTo == 0) {
             return node;
@@ -117,8 +133,54 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchStruc
      * @return
      */
     @Override
-    public SearchTreeNode<K, V> getRoot() {
+    public BinarySearchTreeNode<K, V> getRoot() {
         return root;
+    }
+
+    protected void rotateLeft(BinarySearchTreeNode<K, V> node) {
+        BinarySearchTreeNode<K, V> rightChild = node.getRightChild();
+        if (node == null || rightChild == null) {
+            return;
+        }
+        if (node.hasParent()) {
+            if (node == node.getParent().getLeftChild()) {
+                node.getParent().setLeftChild(rightChild);
+            } else {
+                node.getParent().setRightChild(rightChild);
+            }
+        } else {
+            root = rightChild;
+        }
+        rightChild.setParent(node.getParent());
+        node.setParent(rightChild);
+        node.setRightChild(rightChild.getLeftChild());
+        rightChild.setLeftChild(node);
+        if (node.getRightChild() != null) {
+            node.getRightChild().setParent(node);
+        }
+    }
+
+    protected void rotateRight(BinarySearchTreeNode<K, V> node) {
+        BinarySearchTreeNode<K, V> leftChild = node.getLeftChild();
+        if (node == null || leftChild == null) {
+            return;
+        }
+        if (node.hasParent()) {
+            if (node == node.getParent().getLeftChild()) {
+                node.getParent().setLeftChild(leftChild);
+            } else {
+                node.getParent().setRightChild(leftChild);
+            }
+        } else {
+            root = leftChild;
+        }
+        leftChild.setParent(node.getParent());
+        node.setParent(leftChild);
+        node.setLeftChild(leftChild.getRightChild());
+        leftChild.setRightChild(node);
+        if (node.getLeftChild() != null) {
+            node.getLeftChild().setParent(node);
+        }
     }
 
 }

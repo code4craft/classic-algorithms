@@ -1,12 +1,11 @@
 package com.gugugua.algorithms.trees;
 
-import junit.framework.TestCase;
+import java.util.Random;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
 import com.gugugua.algorithms.PerformanceTimer;
 import com.gugugua.algorithms.SearchEntry;
-import com.gugugua.algorithms.tools.TreeDepthCaculator;
 
 /**
  * @author cairne huangyihua@diandian.com
@@ -14,18 +13,58 @@ import com.gugugua.algorithms.tools.TreeDepthCaculator;
  */
 public class BinarySearchTreeTest extends TestCase {
 
-    @Test
-    public void testAdd() {
-        PerformanceTimer timer = new PerformanceTimer();
-        timer.reset();
+    public void testPerformance() {
         BinarySearchTree<Integer, String> binarySearchTree = new BinarySearchTree<>();
-        for (int i = 0; i < 10000; i++) {
-            binarySearchTree.add(new SearchEntry<Integer, String>(i, String.valueOf(i)));
-        }
-        TreeDepthCaculator depthCaculator = new TreeDepthCaculator();
-        System.out.println(depthCaculator.calcDepth(binarySearchTree));
-        timer.print();
-
+        _testPerformance(binarySearchTree);
     }
 
+    protected void _testPerformance(BinarySearchTree<Integer, String> binarySearchTree) {
+        int round = 10;
+        PerformanceTimer timerCreate = new PerformanceTimer(10);
+        PerformanceTimer timerSearch = new PerformanceTimer(10);
+        for (int j = 0; j < round; j++) {
+            Random random = new Random();
+            int limit = 10000000;
+            timerCreate.start(j);
+            for (int i = 0; i < limit; i++) {
+                binarySearchTree.add(new SearchEntry<Integer, String>(random.nextInt(limit), String
+                        .valueOf(i)));
+            }
+            timerCreate.end(j);
+            binarySearchTree.add(new SearchEntry<Integer, String>(limit / 2, String
+                    .valueOf(limit + 1)));
+            TreeDepthCaculator depthCaculator = new TreeDepthCaculator();
+            System.out.println(depthCaculator.calcDepth(binarySearchTree));
+            SearchEntry<Integer, String> searchEntry = binarySearchTree.get(limit / 2);
+            assertNotNull(searchEntry);
+            timerSearch.start(j);
+            for (int i = 0; i < limit; i++) {
+                binarySearchTree.get(random.nextInt(limit));
+            }
+            timerSearch.end(j);
+        }
+        System.out.println("average create " + timerCreate.average(round));
+        System.out.println("average search " + timerSearch.average(round));
+    }
+
+    public void _testRotate() {
+        for (int j = 0; j < 100; j++) {
+            System.out.println("time " + j);
+            int limit = 10000;
+            BinarySearchTree<Integer, String> binarySearchTree = new BinarySearchTree<>();
+            binarySearchTree.root = new BinarySearchTreeNode<Integer, String>(
+                    new SearchEntry<Integer, String>(0, String.valueOf(0)));
+            Random random = new Random();
+            for (int i = 1; i < limit; i++) {
+                BinarySearchTreeNode<Integer, String> binarySearchTreeNode = new BinarySearchTreeNode<Integer, String>(
+                        new SearchEntry<Integer, String>(random.nextInt(limit), String.valueOf(i)));
+                binarySearchTree.insert(binarySearchTree.getRoot(), binarySearchTreeNode);
+                binarySearchTree.rotateLeft(binarySearchTreeNode);
+                binarySearchTree.rotateLeft(binarySearchTree.root);
+                binarySearchTree.rotateRight(binarySearchTreeNode);
+                binarySearchTree.get(-1);
+                binarySearchTree.get(limit + 1);
+            }
+        }
+    }
 }

@@ -8,15 +8,23 @@ public class PerformanceTimer {
 
     private long[] time;
 
+    private boolean silence;
+
     /**
      * 
      */
     public PerformanceTimer() {
-        time = new long[100];
+        this(100);
+
+    }
+
+    public PerformanceTimer(int size, boolean silence) {
+        time = new long[size];
+        this.silence = silence;
     }
 
     public PerformanceTimer(int size) {
-        time = new long[size];
+        this(size, false);
     }
 
     public void reset() {
@@ -34,7 +42,9 @@ public class PerformanceTimer {
 
     public void end(int round) {
         time[round] = System.currentTimeMillis() - time[round];
-        System.out.println("time cost " + time[round] + " round " + round);
+        if (!silence) {
+            System.out.println("time cost " + time[round] + " round " + round);
+        }
     }
 
     public long average(int round) {

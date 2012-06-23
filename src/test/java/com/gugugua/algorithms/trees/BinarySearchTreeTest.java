@@ -32,7 +32,8 @@ public class BinarySearchTreeTest extends TestCase {
             int limit = 1000000;
             timerCreate.start(j);
             for (int i = 0; i < limit; i++) {
-                binarySearchTree.add(new SearchEntry<Integer, String>(i, String.valueOf(i)));
+                binarySearchTree.add(new SearchEntry<Integer, String>(random.nextInt(limit), String
+                        .valueOf(i)));
             }
             timerCreate.end(j);
             binarySearchTree.add(new SearchEntry<Integer, String>(limit / 2, String

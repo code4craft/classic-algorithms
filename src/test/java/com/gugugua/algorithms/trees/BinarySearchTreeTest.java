@@ -1,5 +1,6 @@
 package com.gugugua.algorithms.trees;
 
+import java.util.Comparator;
 import java.util.Random;
 
 import junit.framework.TestCase;
@@ -14,7 +15,11 @@ import com.gugugua.algorithms.SearchEntry;
 public class BinarySearchTreeTest extends TestCase {
 
     public void testPerformance() {
+        System.out.println("binary search tree");
         BinarySearchTree<Integer, String> binarySearchTree = new BinarySearchTree<>();
+        _testPerformance(binarySearchTree);
+        System.out.println("red black tree");
+        binarySearchTree = new RedBlackTree<>();
         _testPerformance(binarySearchTree);
     }
 
@@ -24,11 +29,10 @@ public class BinarySearchTreeTest extends TestCase {
         PerformanceTimer timerSearch = new PerformanceTimer(10);
         for (int j = 0; j < round; j++) {
             Random random = new Random();
-            int limit = 10000000;
+            int limit = 1000000;
             timerCreate.start(j);
             for (int i = 0; i < limit; i++) {
-                binarySearchTree.add(new SearchEntry<Integer, String>(random.nextInt(limit), String
-                        .valueOf(i)));
+                binarySearchTree.add(new SearchEntry<Integer, String>(i, String.valueOf(i)));
             }
             timerCreate.end(j);
             binarySearchTree.add(new SearchEntry<Integer, String>(limit / 2, String
@@ -66,5 +70,30 @@ public class BinarySearchTreeTest extends TestCase {
                 binarySearchTree.get(limit + 1);
             }
         }
+        Comparator<String> IPcomparator = new Comparator<String>() {
+
+            @Override
+            public int compare(String o1, String o2) {
+                String[] ipSecs1 = o1.split("\\.");
+                String[] ipSecs2 = o2.split("\\.");
+                if (ipSecs1.length != 4 || ipSecs2.length != 4) {
+                    throw new IllegalArgumentException("invalid ip");
+                }
+                for (int i = 0; i < 4; i++) {
+                    try {
+                        Integer ipSec1 = Integer.parseInt(ipSecs1[i]);
+                        Integer ipSec2 = Integer.parseInt(ipSecs1[i]);
+                        int compareTo = ipSec1.compareTo(ipSec2);
+                        if (compareTo != 0) {
+                            return compareTo;
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("invalid ip");
+                    }
+                }
+                return 0;
+            }
+
+        };
     }
 }

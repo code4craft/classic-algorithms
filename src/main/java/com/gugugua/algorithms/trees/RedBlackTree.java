@@ -72,7 +72,7 @@ public class RedBlackTree<K extends Comparable<K>, V> extends BinarySearchTree<K
             return;
         }
 
-        //case 5:
+        //case 5:旋转祖父结点
         parent.setColor(Color.Black);
         node.getGrandParent().setColor(Color.Red);
         if (parent.getRightChild() == node && parent == node.getGrandParent().getRightChild()) {

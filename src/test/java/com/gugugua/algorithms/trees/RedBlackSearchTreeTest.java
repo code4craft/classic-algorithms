@@ -1,6 +1,5 @@
 package com.gugugua.algorithms.trees;
 
-
 /**
  * @author cairne huangyihua@diandian.com
  * @date 2012-6-22

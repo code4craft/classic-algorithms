@@ -1,5 +1,7 @@
 package com.gugugua.fizzBuzz;
 
+import com.gugugua.fizzBuzz.numbersayer.NumberSayer;
+
 /**
  * @author code4crafter@gmail.com
  * @date 14-5-6

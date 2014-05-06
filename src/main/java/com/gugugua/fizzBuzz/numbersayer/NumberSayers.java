@@ -1,4 +1,4 @@
-package com.gugugua.fizzBuzz;
+package com.gugugua.fizzBuzz.numbersayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,15 @@ public abstract class NumberSayers {
         return new OrNumberSayer(numberSayers);
     }
 
-    public static NumberSayer mod(int matchNumber, String word) {
-        return new ModMatchMatchNumberSayer(matchNumber, word);
+    public static ModMatcher.Mod mod(int divisor) {
+        return new ModMatcher.Mod(divisor);
     }
 
-    public static NumberSayer contains(int matchNumber, String word) {
-        return new StringContainsMatchNumberSayer(matchNumber, word);
+    public static NumberSayerBuildMatcher contains(int matchNumber) {
+        return new LiterallContainsMatcher(matchNumber);
     }
 
-    public static NumberSayer echo() {
+    public static NumberSayer echoInputNumber() {
         return new EchoNumberSayer();
     }
 

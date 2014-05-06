@@ -1,4 +1,4 @@
-package com.gugugua.fizzBuzz;
+package com.gugugua.fizzBuzz.numbersayer;
 
 import java.util.List;
 
@@ -23,5 +23,10 @@ public class OrNumberSayer implements NumberSayer {
             }
         }
         return null;
+    }
+
+    public OrNumberSayer or(NumberSayer numberSayer){
+        sayers.add(numberSayer);
+        return this;
     }
 }

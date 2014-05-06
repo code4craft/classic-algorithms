@@ -1,4 +1,4 @@
-package com.gugugua.fizzBuzz;
+package com.gugugua.fizzBuzz.numbersayer;
 
 /**
  * @author code4crafter@gmail.com

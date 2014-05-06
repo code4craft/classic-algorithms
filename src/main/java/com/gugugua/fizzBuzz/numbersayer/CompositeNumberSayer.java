@@ -1,4 +1,4 @@
-package com.gugugua.fizzBuzz;
+package com.gugugua.fizzBuzz.numbersayer;
 
 import java.util.List;
 

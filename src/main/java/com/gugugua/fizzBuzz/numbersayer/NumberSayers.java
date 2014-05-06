@@ -9,7 +9,7 @@ import java.util.List;
  */
 public abstract class NumberSayers {
 
-    public static CompositeNumberSayer all(NumberSayer... numberSayerArray) {
+    public static CompositeNumberSayer concat(NumberSayer... numberSayerArray) {
         List<NumberSayer> numberSayerList = new ArrayList<NumberSayer>(numberSayerArray.length);
         for (NumberSayer numberSayer : numberSayerArray) {
             numberSayerList.add(numberSayer);

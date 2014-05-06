@@ -16,11 +16,11 @@ public class NumberSequenceSayerTest {
                 .setNumberSayer(
                         or(contains(3).thenReturn("Fizz"))
                         .or(
-                            all(
-                                    mod(3).is(0).thenReturn("Fizz"),
-                                    mod(5).is(0).thenReturn("Buzz"),
-                                    mod(7).is(0).thenReturn("Whizz")
-                            )
+                                concat(
+                                        mod(3).is(0).thenReturn("Fizz"),
+                                        mod(5).is(0).thenReturn("Buzz"),
+                                        mod(7).is(0).thenReturn("Whizz")
+                                )
                         )
                         .or(echoInputNumber())
                 )
